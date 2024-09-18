@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load app_tags %}
+
+{% block title %}Рецепты{% endblock %}
+{% block content %}
+
+<div class="recipe">
+<h1>{{ dish }}</h1>
+{% if count %}
+
+<div class="card" style="width: 45rem;">
+    <div class="card-header">
+        Для приготовления на {{ count }} {{ count|choose_plural_word }} потребуется следующее количество ингридиентов:
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for ingredient, amount in recipe.items %}
+            <li class="list-group-item" >{{ ingredient }}: {{ amount|calculate:count }}</li>
+        {% empty %}
+            <p>Ингридиентов не нашлось :(</p>
+        {% endfor %}
+    </ul>
+</div>
+
+{% else %}
+<div class="card" style="width: 45rem;">
+    <div class="card-header">
+        Для приготовления на 1 человека потребуется следующее количество ингридиентов:
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for ingredient, amount in recipe.items %}
+            <li class="list-group-item" >{{ ingredient }}: {{ amount }}</li>
+        {% empty %}
+            <p>Ингридиентов не нашлось :(</p>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endif %}
+    <br>
+<form action="{% url 'recipes' dish=dish %}" method="get">
+  <div class="col-md-5" style="width: 45rem;">
+    <label for="validationCustom01" class="form-label">Введите кол-во человек, чтобы рассчитать на них нужное количество ингридиентов</label>
+    <input type="text" name="servings" class="form-control" id="validationCustom01" value="1" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Рассчитать</button>
+  </div>
+</form>
+<br>
+<a style="text-decoration: none;" href="{% url 'main' %}">Вернуться к списку блюд</a>
+{% endblock %}

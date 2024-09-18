@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Список блюд{% endblock %}
+
+{% block content %}
+
+<h1>Список доступных блюд</h1>
+<ol style="width: 45rem;">
+    {% for dish in dishes %}
+        <div class="alert alert-primary" role="alert">
+          {{ dish.0 }}. <a href="{% url 'recipes' dish=dish.1%}" class="alert-link">{{ dish.1 }}</a>.
+        </div>
+    {% empty %}
+        <h2>Блюда отсутствуют</h2>
+    {% endfor %}
+</ol>
+
+{% include 'paginator.html' with page=dishes %}
+
+{% endblock %}
